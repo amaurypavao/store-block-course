@@ -1,16 +1,32 @@
-import React from 'react'
+// store-block/react/Countdown.tsx
+import React, { useState } from 'react'
+import { TimeSplit } from './typings/global'
+import { tick, getTwoDaysFromNow } from './utils/time'
 
-interface CountdownProps {}
-
-const Countdown: StorefrontFunctionComponent<CountdownProps> = ({}) => {
-  return <div />
+interface CountdownProps {
+  targetDate: string
 }
 
-Countdown.schema = {
-  title: 'editor.countdown.title',
-  description: 'editor.countdown.description',
-  type: 'object',
-  properties: {},
+const DEFAULT_TARGET_DATE = getTwoDaysFromNow()
+
+const Countdown: StorefrontFunctionComponent<CountdownProps> = ({
+  targetDate = DEFAULT_TARGET_DATE,
+}) => {
+  const [timeRemaining, setTime] = useState<TimeSplit>({
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+  })
+
+  tick(targetDate, setTime)
+
+  return (
+    <div>
+      <h1>{`${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}</h1>
+    </div>
+  )
 }
+
+
 
 export default Countdown
